@@ -1,25 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const burger = require('../models/workout.js'); // import workout.js
-
-// routes and login within them
-// route for select method
-router.get("/", function(req, res) {
-    workout.select(function(data) {
-        var hbsObject = {
-            workouts: data
-        };
-        // console.log(hbsObject);
-        res.render("index", hbsObject);
-    });
-});
+const workout = require('../models/workout.js'); // import workout.js
 
 // route for insert method
 router.post("/api/workouts", function(req, res) {
-    burger.insert(["type", "name", "duration", "weight", "reps", "sets"], [req.body.type, req.body.name, req.body.duration, req.body.weight, req.body.reps, req.body.sets], function(result) {
+    workout.insert(["type", "name", "duration", "weight", "reps", "sets"], [req.body.type, req.body.name, req.body.duration, req.body.weight, req.body.reps, req.body.sets], function(result) {
       res.json({ id: result.insertId });
     });
   });
+
+router.get("/api/workouts", function(req, res) {
+    workout.find().then(function(response){
+      res.json(response)
+    });
+});
 
 // route for update method
 router.put("/api/workouts/:id", function(req, res) {
@@ -41,3 +35,8 @@ router.put("/api/workouts/:id", function(req, res) {
 
 // export routes
 module.exports = router;
+
+//GET -> Get data
+//POST -> Create new object
+//PUT -> Modify
+//DELETE -> Delete
